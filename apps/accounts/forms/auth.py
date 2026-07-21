@@ -18,6 +18,6 @@ class LoginForm(forms.Form):
     )
     remember_me = forms.BooleanField(
         required=False, 
-        label="Lembrar-me",
+        label="Lembrar de mim neste dispositivo",
         widget=forms.CheckboxInput()
     )

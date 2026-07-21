@@ -18,8 +18,14 @@ def login_view(request):
                 email=form.cleaned_data["email"],
                 password=form.cleaned_data["password"]
             )
-            if user:
+            if user is not None:
                 login(request, user)
+                if form.cleaned_data["remember_me"]:
+                    request.session.set_expiry(1 * 24 * 60 * 60)
+                else:
+                    request.session.set_expiry(0)
+
+                # Redireciona o usuário para a url que ele estava tentando entrar ou caso seja inválida para a url da dashboard    
                 next_url = request.GET.get("next")
                 if next_url and url_has_allowed_host_and_scheme(
                     url=next_url,
