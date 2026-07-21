@@ -1,0 +1,13 @@
+{% extends "core/base_template.html" %}
+{% block title %} Dashboard {% endblock %}
+
+{% block main %}
+
+Dashboard do Sistema - 
+<form action="{% url "accounts:logout" %}" method="POST">
+    {% csrf_token %}
+
+    <button type="submit">Sair</button>
+</form>
+
+{% endblock %}

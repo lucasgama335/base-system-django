@@ -1,0 +1,32 @@
+{% extends "accounts/base_template.html" %}
+{% block title %} Login {% endblock %}
+
+{% block main %}
+
+<h2>Acessar o Sistema - Login</h2>
+
+<!-- Exibição de Mensagens de Erro -->
+{% if messages %}
+    {% for message in messages %}
+        <div style="color: red;">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form action="{% url "accounts:login" %}" method="POST" autocomplete="off">
+    {% csrf_token %}
+
+    <div>
+        <label for="{{ form.email.id_for_label }}">E-mail</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+    <div>
+        <label for="{{ form.password.id_for_label }}">Senha</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+    </div>
+
+    <button type="submit">Entrar</button>
+</form>
+
+{% endblock %}
