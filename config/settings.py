@@ -137,12 +137,17 @@ LOGIN_REDIRECT_URL = "core:dashboard"
 LOGOUT_REDIRECT_URL = "accounts:login"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_SAVE_EVERY_REQUEST = True
+# Tempo de validade do link de recuperação de senha (em segundos)
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 1  # Expira em 1 hora (3600 segundos)
 
 # Em ambiente de produção (com HTTPS ativado), force o uso de cookies seguros:
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
 
-
 #RECAPTCHA CONFIG
 RECAPTCHA_PUBLIC_KEY = '6Ldep14tAAAAAEOgRol3SqEY3Famrnezf_Wov6aN'
 RECAPTCHA_PRIVATE_KEY = '6Ldep14tAAAAAEO5lzQ9vT5zhYZbPunV1XC33lMH'
+
+# Impressão de e-mails no terminal em ambiente de desenvolvimento
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'no-reply@seusistema.com.br'

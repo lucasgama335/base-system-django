@@ -28,3 +28,19 @@ class LoginForm(forms.Form):
         required_score=0.85,
         action='signin'
     ))
+
+class ResetPasswordRequestForm(forms.Form):
+    email = forms.EmailField(
+        label="E-mail", 
+        required=True, 
+        max_length=255,
+        widget=forms.EmailInput(attrs={
+            "placeholder": "seu@email.com",
+            "autofocus": True
+        })
+    )
+
+    captcha = ReCaptchaField(widget=ReCaptchaV3(
+        required_score=0.85,
+        action='signin'
+    ))
