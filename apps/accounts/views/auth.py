@@ -21,7 +21,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 if form.cleaned_data["remember_me"]:
-                    request.session.set_expiry(1 * 24 * 60 * 60)
+                    request.session.set_expiry(14 * 24 * 60 * 60)
                 else:
                     request.session.set_expiry(0)
 
