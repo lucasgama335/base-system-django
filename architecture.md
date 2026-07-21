@@ -210,3 +210,6 @@ A separação em Models + `services.py` (regra de negócio) foi pensada para ser
 Recomendação: manter `django_base` (este projeto, sem DRF) e criar um template irmão `django_api_base` a partir de uma cópia, em vez de misturar os dois propósitos num só template.
 
 ---
+
+## 8. A Fazer
+Rate Limite nas Tentativas de Login []

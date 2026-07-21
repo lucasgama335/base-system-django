@@ -57,5 +57,14 @@ def password_recovery_view(request):
 
 @require_POST
 def logout_view(request):
+    """
+    Encerra a sessão do usuário com segurança e redireciona para o login.
+    """
+    # Encerra a sessão, apaga o cookie e o registro no banco
     logout(request)
+
+    # Exibe uma mensagem amigável
+    messages.info(request, "Você saiu do sistema com sucesso.")
+
+    # Redireciona para a tela de login
     return redirect(settings.LOGIN_URL)
