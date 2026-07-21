@@ -34,9 +34,16 @@ class CustomAuthorizationBackend(BaseBackend):
     def get_all_permissions(self, user_obj, obj=None):
         """
         Retorna o conjunto de códigos de permissões ativas do usuário.
+
+        Superusuários NÃO recebem um bypass aqui, ao contrário de has_perm():
+        a lista real de permissões de um superusuário é intencionalmente vazia
+        (ele tem acesso irrestrito por is_superuser, não por permissões
+        nomeadas). Não usar esse método pra decidir o que exibir num menu
+        achando que ele reflete o acesso real do usuário — use has_perm()
+        pra isso.
         """
         if not _user_can_be_verified(user_obj):
-                    return False
+            return set()
         
         return set(
             UserPermission.objects.filter(
