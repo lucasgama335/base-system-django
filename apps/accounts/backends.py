@@ -1,12 +1,12 @@
 from django.contrib.auth.backends import BaseBackend
-from accounts.models import User
+from apps.accounts.models import User
 
 class EmailAuthenticationBackend(BaseBackend):
     """
     Backend essencial para autenticar usuários via E-mail e Senha.
     """
     def authenticate(self, request, email=None, password=None, **kwargs):
-        if not email or password:
+        if not email or not password:
             return None
 
         try:
@@ -22,6 +22,6 @@ class EmailAuthenticationBackend(BaseBackend):
     
     def get_user(self, user_id):
         try:
-            return User.objects.get(pk=user_id, deleted_at__is_null=True)
+            return User.objects.get(pk=user_id, deleted_at__isnull=True)
         except User.DoesNotExist:
             return None

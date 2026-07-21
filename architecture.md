@@ -158,7 +158,7 @@ Departamentos e permissões usam `is_active` (não soft delete/`deleted_at`) por
 
 - `deleted_at` existe **somente** na tabela `users`.
 - `departments` e `permissions` não têm soft delete — são tratados como catálogo, controlados via `is_active`.
-- E-mail de usuário deletado **nunca é reutilizável** (por isso `unique=True` simples em `email` já é suficiente, sem necessidade de índice condicional).
+- E-mail de usuário deletado é reutilizável (por isso `unique=True` e quando é deletado o e-mail é alterado com um prefixo que marca).
 
 ### 4.6 Função central de checagem de permissão
 

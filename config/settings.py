@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Custom apps
-    'accounts',
-    'departments',
-    'authorization',
-    'core'
+    'apps.accounts',
+    'apps.departments',
+    'apps.authorization',
+    'apps.core'
 ]
 
 MIDDLEWARE = [
@@ -125,8 +125,8 @@ STATIC_ROOT = BASE_DIR / 'static/'
 AUTH_USER_MODEL = "accounts.User"
 # Define a estratégia de autenticação
 AUTHENTICATION_BACKENDS = [
-    "accounts.backends.EmailAuthenticationBackend",
-    "authorization.backends.CustomAuthorizationBackend",
+    "apps.accounts.backends.EmailAuthenticationBackend",
+    "apps.authorization.backends.CustomAuthorizationBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 

@@ -21,7 +21,7 @@ class CustomAuthorizationBackend(BaseBackend):
             user=user_obj,
             permission__code=perm,
             permission__is_active=True
-        ).exists
+        ).exists()
     
     def get_all_permissions(self, user_obj, obj=None):
         """Retorna o conjunto de códigos de permissões ativas do usuário."""
@@ -31,6 +31,6 @@ class CustomAuthorizationBackend(BaseBackend):
         return set(
             UserPermission.objects.filter(
                 user=user_obj,
-                permission__isa_ctive=True
+                permission__is_active=True
             ).values_list("permission__code", flat=True)
         )
