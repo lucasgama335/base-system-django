@@ -1,5 +1,7 @@
 from django.contrib.auth.backends import BaseBackend
+
 from .models import UserPermission
+
 
 def _user_can_be_verified(user_obj):
     """

@@ -1,12 +1,19 @@
-from django.shortcuts import redirect, render
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import (PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetView)
+from django.contrib.auth.views import (
+    PasswordResetCompleteView,
+    PasswordResetConfirmView,
+    PasswordResetDoneView,
+    PasswordResetView,
+)
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
-from django.urls import reverse_lazy
-from django.conf import settings
+
 from apps.accounts.forms import LoginForm
+
 
 def login_view(request):   
     if request.user.is_authenticated:
