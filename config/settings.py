@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.departments',
     'apps.authorization',
-    'apps.core'
+    'apps.core',
+    # Third Party apps
+    'django_recaptcha'
 ]
 
 MIDDLEWARE = [
@@ -139,3 +141,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 # Em ambiente de produção (com HTTPS ativado), force o uso de cookies seguros:
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
+
+
+#RECAPTCHA CONFIG
+RECAPTCHA_PUBLIC_KEY = '6Ldep14tAAAAAEOgRol3SqEY3Famrnezf_Wov6aN'
+RECAPTCHA_PRIVATE_KEY = '6Ldep14tAAAAAEO5lzQ9vT5zhYZbPunV1XC33lMH'

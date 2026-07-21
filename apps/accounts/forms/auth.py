@@ -1,4 +1,6 @@
 from django import forms
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV3
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
@@ -21,3 +23,8 @@ class LoginForm(forms.Form):
         label="Lembrar de mim neste dispositivo",
         widget=forms.CheckboxInput()
     )
+
+    captcha = ReCaptchaField(widget=ReCaptchaV3(
+        required_score=0.85,
+        action='signin'
+    ))
