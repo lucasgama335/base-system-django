@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.http import require_POST
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.contrib import messages
 from apps.accounts.forms import LoginForm
 from django.conf import settings
@@ -19,8 +20,15 @@ def login_view(request):
             )
             if user:
                 login(request, user)
-                next_url = request.GET.get("next", settings.LOGIN_REDIRECT_URL)
-                return redirect(next_url)
+                next_url = request.GET.get("next")
+                if next_url and url_has_allowed_host_and_scheme(
+                    url=next_url,
+                    allowed_hosts={request.get_host()},
+                    require_https=request.is_secure()
+                ):
+                    return redirect(next_url)
+                
+                return redirect(settings.LOGIN_REDIRECT_URL)
             
             messages.error(request, "E-mail e ou senha inválidos.")
     else:
