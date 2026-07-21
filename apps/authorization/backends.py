@@ -8,8 +8,8 @@ class CustomAuthorizationBackend(BaseBackend):
     """
 
     def has_perm(self, user_obj, perm, obj=None):
-        # 1. Usuários inativos não possuem permissões
-        if not user_obj.is_active:
+        # 1. Usuários inativos ou deletados não possuem permissões
+        if not user_obj.is_active or user_obj.deleted_at is not None:
             return False
         
         # 2. Superusuários têm acesso irrestrito

@@ -12,7 +12,7 @@
     {% endfor %}
 {% endif %}
 
-<form action="{% url "accounts:login" %}" method="POST" autocomplete="off">
+<form action="{% url "accounts:login" %}" method="POST">
     {% csrf_token %}
 
     <div>
