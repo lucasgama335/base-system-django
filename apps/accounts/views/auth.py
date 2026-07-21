@@ -9,7 +9,6 @@ def login_view(request):
     # 1. Guarda de autenticação
     if request.user.is_authenticated:
         return redirect(settings.LOGIN_REDIRECT_URL)
-    
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -26,7 +25,6 @@ def login_view(request):
             messages.error(request, "E-mail e ou senha inválidos.")
     else:
         form = LoginForm()
-
     return render(request, "accounts/authentication/login.html", {
         "form": form
     })

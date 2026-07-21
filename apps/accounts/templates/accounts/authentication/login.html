@@ -26,6 +26,12 @@
         {{ form.password.errors }}
     </div>
 
+    <div>
+        <label for="{{ form.remember_me.id_for_label }}">Lembrar-me</label>
+        {{ form.remember_me }}
+        {{ form.remember_me.errors }}
+    </div>
+
     <button type="submit">Entrar</button>
 </form>
 

@@ -16,4 +16,8 @@ class LoginForm(forms.Form):
             "placeholder": "••••••••"
         })
     )
-    remember_me = forms.CheckboxInput()
+    remember_me = forms.BooleanField(
+        required=False, 
+        label="Lembrar-me",
+        widget=forms.CheckboxInput()
+    )
