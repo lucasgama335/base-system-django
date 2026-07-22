@@ -13,5 +13,4 @@ def dashboard_view(request):
     context = {
         "user": request.user
     }
-    print(request.user.is_2fa_enabled)
     return render(request, "core/dashboard/dashboard.html", context)
