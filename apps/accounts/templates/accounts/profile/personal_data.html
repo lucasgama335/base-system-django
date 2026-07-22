@@ -1,0 +1,122 @@
+{% extends "core/base_template.html" %}
+{% load widget_tweaks %}
+
+{% load static %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block main %}
+<div class="w-full">
+    <div class="w-full flex flex-col md:flex-row mb-4 bg-white rounded-lg" role="tablist" aria-label="Navegação de abas">
+        <!-- Botão Aba 1 (Ativo por padrão) -->
+        <button 
+            id="tab-perfil" 
+            data-target="#panel-perfil" 
+            role="tab" 
+            aria-selected="true" 
+            aria-controls="panel-perfil"
+            class="tab-btn w-full px-8 py-4 text-sm font-medium transition-colors focus:outline-none text-[#089bab] border-l-2 md:border-b-2 md:border-l-0 border-[#089bab]"
+        >
+            <i class="fa fa-user mr-1"></i> Perfil
+        </button>
+
+        <!-- Botão Aba 2 -->
+        <button 
+            id="tab-password" 
+            data-target="#panel-password" 
+            role="tab" 
+            aria-selected="false" 
+            aria-controls="panel-password"
+            class="tab-btn w-full px-8 py-4 text-sm font-medium transition-colors focus:outline-none text-gray-500 border-l-2 md:border-b-2 md:border-l-0 border-transparent hover:text-gray-700 hover:border-gray-300"
+        >
+            <i class="fa fa-key mr-1"></i> Mudar Senha
+        </button>
+        
+        
+        <!-- Botão Aba 3 -->
+        <button 
+            id="tab-seguranca" 
+            data-target="#panel-seguranca" 
+            role="tab" 
+            aria-selected="false" 
+            aria-controls="panel-seguranca"
+            class="tab-btn w-full px-8 py-4 text-sm font-medium transition-colors focus:outline-none text-gray-500 border-l-2 md:border-b-2 md:border-l-0 border-transparent hover:text-gray-700 hover:border-gray-300"
+        >
+            <i class="fa fa-shield mr-1"></i> Segurança
+        </button>
+    </div>
+
+    <!-- Conteúdo das Abas (Panels) -->
+    <div class="p-6 bg-white">
+
+        <!-- Painel 1 (Visível por padrão) -->
+        <div id="panel-perfil" role="tabpanel" aria-labelledby="tab-perfil" class="tab-panel transition-opacity duration-300 opacity-100 block rounded-lg">
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">Detalhes do Perfil de {{ user.first_name }}</h2>
+            <p class="text-gray-600 text-sm mb-5">Aqui ficam as informações principais do usuário. Você pode colocar formulários, fotos e dados pessoais dentro deste container.</p>
+        
+            <form class="w-full" method="POST">
+                {% csrf_token %}
+                
+                <div class="flex flex-col md:flex-row gap-10 mb-4">
+                    <div class="w-full md:w-2/4 flex flex-col">
+                        <label for="{{ form.first_name.id_for_label }}" class="text-[13px] leading-8">Primeiro Nome</label>
+                        {% with fallback_name=user.first_name|default_if_none:"" %}
+                            {% render_field form.first_name value=fallback_name class="py-3 px-4 rounded-[10px] bg-transparent border border-solid border-[#dbdfe7] text-[13px] focus:outline-none focus:border-cyan-500" %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="w-full md:w-2/4 flex flex-col">
+                        <label for="{{ form.last_name.id_for_label }}" class="text-[13px] leading-8">Sobrenome</label>
+                        {% with fallback_name=user.last_name|default_if_none:"" %}
+                            {% render_field form.last_name value=fallback_name class="py-3 px-4 rounded-[10px] bg-transparent border border-solid border-[#dbdfe7] text-[13px] focus:outline-none focus:border-cyan-500" %}
+                        {% endwith %}
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-10 mb-4">
+                    <div class="w-full md:w-2/4 flex flex-col">
+                        <label for="{{ form.email.id_for_label }}" class="text-[13px] leading-8">E-mail</label>
+                        {% with fallback_name=user.email|default_if_none:"" %}
+                            {% render_field form.email value=fallback_name class="py-3 px-4 rounded-[10px] bg-transparent border border-solid border-[#dbdfe7] text-[13px] focus:outline-none focus:border-cyan-500" %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="w-full md:w-2/4 flex flex-col">
+                        <label for="{{ form.phone.id_for_label }}" class="text-[13px] leading-8">Telefone</label>
+                        {% with fallback_name=user.phone|default_if_none:"" %}
+                            {% render_field form.phone value=fallback_name class="py-3 px-4 rounded-[10px] bg-transparent border border-solid border-[#dbdfe7] text-[13px] focus:outline-none focus:border-cyan-500" %}
+                        {% endwith %}
+                    </div>
+                </div>
+
+                <button type="submit" class="bg-[#089bab] px-8 py-2 rounded-lg text-sm text-white"><i class="fa fa-sync me-1"></i> Atualizar Dados</button>
+            </form>
+        </div>
+
+        <!-- Painel 2 (Oculto) -->
+        <div id="panel-password" role="tabpanel" aria-labelledby="tab-password" class="tab-panel transition-opacity duration-300 opacity-0 hidden rounded-lg">
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">Privacidade e Segurança</h2>
+            <p class="text-gray-600 text-sm">Gerencie senhas, autenticação em duas etapas e sessões ativas da sua conta.</p>
+        </div>
+        
+        <!-- Painel 3 (Oculto) -->
+        <div id="panel-seguranca" role="tabpanel" aria-labelledby="tab-seguranca" class="tab-panel transition-opacity duration-300 opacity-0 hidden rounded-lg">
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">Privacidade e Segurança</h2>
+            <p class="text-gray-600 text-sm">Gerencie senhas, autenticação em duas etapas e sessões ativas da sua conta.</p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'core/js/tab-pane-function.js' %}"></script>
+<script src="https://unpkg.com/imask"></script>
+<script>
+    const phoneMask = document.getElementById("{{ form.phone.id_for_label }}");
+    const maskOptions = {
+        mask: '(00) 00000-0000'
+    };
+    const mask = IMask(phoneMask, maskOptions);
+</script>
+{% endblock %}

@@ -4,6 +4,8 @@ module.exports = {
 		"./templates/**/*.html",
 		"./apps/**/templates/**/*.html",
 		"./static/**/*.js",
+		"./apps/**/static/**/*.js",
+		"./apps/**/static/**/**/*.js",
 		// "./apps/**/forms.py",
 		// "./apps/**/forms/*.py",
 	],

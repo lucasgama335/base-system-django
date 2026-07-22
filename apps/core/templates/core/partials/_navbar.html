@@ -1,0 +1,17 @@
+{% load static %}
+<aside id="mainMenu" class="
+    absolute left-0 md:relative bg-[#089bab] z-[910]
+    w-[245px] h-dvh overflow-y-auto transition-all duration-300 overflow-x-hidden
+" aria-expanded="true">
+
+    <div class="w-full flex justify-between items-center p-[16px]">
+        <a href="{% url "core:dashboard" %}" class="w-full flex items-center gap-4">
+                <img src="{% static 'images/logo-menu.png' %}" class="h-[45px]" alt="logo">
+                <span class="text-white text-[28px]">Teste</span>
+        </a>
+
+            <button id="mainMenuControl2" class="visible md:invisible">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</aside>
