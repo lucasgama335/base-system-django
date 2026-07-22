@@ -218,6 +218,7 @@ Recaptcha [x]
 Fazer a troca do haser de senhas para Argon2PasswordHasher (pip install argon2-cffi + colocar Argon2PasswordHasher primeiro em PASSWORD_HASHERS)
 Configurar cache para o ratelimiter []
 Pedir Reconfirmação Quando for Desativar 2FA[]
+trocar e-mail deve exigir confirmação (senha atual + link no novo e-mail) antes de efetivar ou, no mínimo, notificar o e-mail antigo quando o e-mail da conta mudar []
 
 LEMBRAR DE ALTERAR DEBUF = Flase e SECRETE_KEY quando for para produção
 COLOR: #16284C

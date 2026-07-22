@@ -1,7 +1,6 @@
 import re
 
 from django import forms
-from django.contrib.auth import user_logged_in as user
 
 from apps.accounts.models import User
 

@@ -53,7 +53,13 @@
         <div id="panel-perfil" role="tabpanel" aria-labelledby="tab-perfil" class="tab-panel transition-opacity duration-300 opacity-100 block rounded-lg">
             <h2 class="text-lg font-semibold text-gray-800 mb-2">Detalhes do Perfil de {{ user.first_name }}</h2>
             <p class="text-gray-600 text-sm mb-5">Aqui ficam as informações principais do usuário. Você pode colocar formulários, fotos e dados pessoais dentro deste container.</p>
-        
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="text-[13px] leading-6 mb-4 text-red-500">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            
             <form class="w-full" method="POST">
                 {% csrf_token %}
                 

@@ -10,8 +10,11 @@ def personal_data(request):
     if request.method == "POST":
         form = PersonalDataForm(request.POST, instance=request.user)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Dados da sua conta atualizados com sucesso.")
+            if form.has_changed():
+                form.save()
+                messages.success(request, "Dados da sua conta atualizados com sucesso.")
+            else:
+                messages.info(request, 'Nenhum dado foi alterado.')
 
             return redirect("accounts:profile")
     
