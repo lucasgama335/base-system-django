@@ -8,11 +8,15 @@ from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_POST
+from django_ratelimit.decorators import ratelimit
 
 from apps.accounts.models import User, UserBackupCode
+from apps.accounts.utils import get_ratelimit_ip
 
 
 @login_required
+@ratelimit(key=get_ratelimit_ip, rate="5/m", method="POST", block=True)
 def setup_2fa_view(request):
     user = request.user
 
@@ -68,6 +72,7 @@ def setup_2fa_view(request):
     }
     return render(request, "accounts/authentication/2fa_setup.html", context)
 
+@ratelimit(key=get_ratelimit_ip, rate="5/m", method="POST", block=True)
 def verify_2fa_view(request):
     # Se o usuário já estiver logado, não precisa estar aqui
     if request.user.is_authenticated:
@@ -124,6 +129,8 @@ def verify_2fa_view(request):
             messages.error(request, "Código de autenticação inválido. Tente novamente.")
     return render(request, "accounts/authentication/2fa_verify.html", { "user_email": user.email })
 
+@login_required
+@require_POST
 def switch_2fa_view(request):
     user = request.user
     print(user.is_2fa_enabled)
