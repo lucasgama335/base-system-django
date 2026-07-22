@@ -16,6 +16,15 @@ class PersonalDataForm(forms.ModelForm):
             "phone": forms.TextInput()
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        if self.instance and self.instance.pk:
+            
+            if self.instance.phone:
+                tel = self.instance.phone
+                self.initial["phone"] = f'({tel[:2]}) {tel[2:7]}-{tel[7:]}'
+
     def clean_first_name(self):
         return str(self.cleaned_data["first_name"]).title()
 
@@ -29,6 +38,5 @@ class PersonalDataForm(forms.ModelForm):
         masked_phone = self.cleaned_data.get("phone")
         
         if masked_phone:
-            # Transforma "(11) 98888-7777" em "11988887777"
             cleaned_phone = re.sub(r'[^0-9]', '', masked_phone)
             return cleaned_phone
