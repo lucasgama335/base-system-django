@@ -9,6 +9,7 @@ from django.contrib.auth.views import (
 )
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
 from django_ratelimit.decorators import ratelimit
 
@@ -69,6 +70,7 @@ def logout_view(request):
     # Redireciona para a tela de login
     return redirect(settings.LOGIN_URL)
 
+@method_decorator(ratelimit(key=get_ratelimit_ip, rate="5/m", method="POST", block=True), name="post")
 class PasswordResetView(PasswordResetView):
     template_name = "accounts/authentication/password_reset.html"
     email_template_name = "accounts/emails/password_reset_email.html"

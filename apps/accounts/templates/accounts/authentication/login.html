@@ -3,40 +3,55 @@
 
 {% block main %}
 
-<h2>Acessar o Sistema - Login</h2>
 
-<!-- Exibição de Mensagens de Erro -->
-{% if messages %}
-    {% for message in messages %}
-        <div style="color: red;">{{ message }}</div>
-    {% endfor %}
-{% endif %}
+<div class="w-4/5 md:max-w-screen-xl flex flex-col items-center md:flex-row md:items-baseline relative bg-red-500">
+    <section class="w-full md:w-1/2 bg-red-500">
+        Teste
+    </section>
+    <section class="w-full md:w-1/2 rounded-[37px] py-5 px-[60px] bg-white">
+        <h1 class="text-xl font-medium leading-7 mb-4">Login no sistema</h1>
+        <p class="mb-4 text-slate-500 text-[13px]">Digite seu endereço de e-mail e senha para acessar o sistema.</p>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="text-[13px] leading-6 mb-4 text-red-500">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
-<form action="{% url "accounts:login" %}" method="POST">
-    {% csrf_token %}
+        <form action="{% url "accounts:login" %}" method="POST" class="w-full">
+            {% csrf_token %}
 
-    <div>
-        <label for="{{ form.email.id_for_label }}">E-mail</label>
-        {{ form.email }}
-        {{ form.email.errors }}
-    </div>
-    <div>
-        <label for="{{ form.password.id_for_label }}">Senha</label>
-        {{ form.password }}
-        {{ form.password.errors }}
-    </div>
+            <div class="flex flex-col">
+                <label for="{{ form.email.id_for_label }}" class="text-[13px] leading-6">E-mail</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+            <div class="flex flex-col mb-4">
+                <label for="{{ form.password.id_for_label }}" class="text-[13px] leading-6">Senha</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
 
-    {{ form.remember_me }}
-    {{ form.remember_me.errors }}
-    <label for="{{ form.remember_me.id_for_label }}">Lembrar-me</label>
+            <div class="flex justify-between items-center w-full mb-8">
+                <div class="flex items-center">
+                    {{ form.remember_me }}
+                    {{ form.remember_me.errors }}
+                    <label for="{{ form.remember_me.id_for_label }}" class="ml-1 text-[13px] leading-6">Lembrar-me</label>
+                </div>
 
-    {{ form.captcha }}
+                <button type="submit" class="bg-[#CEEBEE] py-2 px-6 rounded-[3.25px] text-cyan-500 text-[13px]">Entrar</button>
+            </div>
 
-    <br/>
-    <br/>
-    <button type="submit">Entrar</button>
+            <div class="border-t border-solid border-[#CEEBEE] mb-8 py-8">
+                <span class="text-[13px] text-slate-500 leading-6">Esqueceu sua senha?</span><a href="{% url "accounts:password_reset" %}" class="text-[13px] leading-6 ml-1 text-cyan-500">Recuperar</a>
+            </div>
 
-    <a href="{% url "accounts:password_reset" %}">Esqueci minha senha</a>
-</form>
+            {{ form.captcha }}
+
+
+        </form>
+    </section>
+
+</div>
 
 {% endblock %}
