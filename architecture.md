@@ -217,3 +217,6 @@ Autenticação em Dois Fatores [x]
 Recaptcha [x]
 Fazer a troca do haser de senhas para Argon2PasswordHasher (pip install argon2-cffi + colocar Argon2PasswordHasher primeiro em PASSWORD_HASHERS)
 Configurar cache para o ratelimiter []
+Pedir Reconfirmação Quando for Desativar 2FA[]
+
+LEMBRAR DE ALTERAR DEBUF = Flase e SECRETE_KEY quando for para produção
