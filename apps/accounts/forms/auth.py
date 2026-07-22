@@ -9,16 +9,13 @@ class LoginForm(forms.Form):
         required=True, 
         max_length=255,
         widget=forms.EmailInput(attrs={
-            "class": "py-3 px-4 rounded-[10px] bg-transparent border border-solid border-[#dbdfe7] text-[13px] focus:outline-none",
             "placeholder": "seu@email.com",
-            "autofocus": True,
-            "autocomplete": "new-email"
+            "autofocus": True
         })
     )
     password = forms.CharField(
         label="Senha",
         widget=forms.PasswordInput(attrs={
-            "class": "py-3 px-4 rounded-[10px] bg-transparent border border-solid border-[#dbdfe7] text-[13px] focus:outline-none",
             "placeholder": "••••••••"
         })
     )
