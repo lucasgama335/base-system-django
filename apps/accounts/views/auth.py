@@ -11,10 +11,13 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
+from django_ratelimit.decorators import ratelimit
 
 from apps.accounts.forms import LoginForm
+from apps.accounts.utils import get_ratelimit_ip
 
 
+@ratelimit(key=get_ratelimit_ip, rate="5/m", method="POST", block=True)
 def login_view(request):   
     if request.user.is_authenticated:
         return redirect(settings.LOGIN_REDIRECT_URL)
