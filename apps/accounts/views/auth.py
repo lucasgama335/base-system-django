@@ -34,9 +34,9 @@ def login_view(request):
                 # --- INTERCEPTAÇÃO DO 2FA ---
                 if user.is_2fa_enabled:
                     # Salva temporariamente os dados na sessão sem autenticar o usuário ainda
-                    request.session['pre_2fa_user_id'] = user.id
-                    request.session['pre_2fa_remember_me'] = remember_me
-                    return redirect('accounts:2fa_verify')
+                    request.session["pre_2fa_user_id"] = user.id
+                    request.session["pre_2fa_remember_me"] = remember_me
+                    return redirect("accounts:2fa_verify")
                 
                 # --- LOGIN NORMAL (SEM 2FA) ---
                 login(request, user)
