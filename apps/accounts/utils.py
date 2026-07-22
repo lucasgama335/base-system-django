@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.shortcuts import redirect
+from django.utils.http import url_has_allowed_host_and_scheme
 
 
 def get_ratelimit_ip(group, request):
@@ -20,3 +22,11 @@ def get_ratelimit_ip(group, request):
             
     # Fallback para desenvolvimento local ou requisições diretas sem proxy
     return request.META.get('REMOTE_ADDR')
+
+def redirect_safe_next_url(request, route):
+    # Redireciona o usuário para a url que ele estava tentando entrar ou caso seja inválida para a url da dashboard    
+    next_url = request.GET.get("next")
+    if next_url and url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
+        return redirect(next_url)
+
+    return redirect(route)

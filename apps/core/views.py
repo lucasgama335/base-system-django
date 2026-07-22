@@ -11,6 +11,7 @@ def dashboard_view(request):
     # Como a view está protegida, você tem a garantia de que request.user 
     # é um objeto User válido (e não um AnonymousUser).
     context = {
-        "user_name": request.user.first_name
+        "user": request.user
     }
+    print(request.user.is_2fa_enabled)
     return render(request, "core/dashboard/dashboard.html", context)

@@ -1,0 +1,37 @@
+{% extends "accounts/base_template.html" %}
+{% block title %} Login {% endblock %}
+
+{% block main %}
+
+<h2>Verificação de Dois Fatores (2FA)</h2>
+<p>Digite o código do seu aplicativo autenticador <strong>ou um dos seus códigos de backup</strong>:</p>
+
+{% if messages %}
+    {% for message in messages %}
+        <div style="color: red;">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div>
+        <label for="code">Código (6 dígitos ou código de backup):</label>
+        <input 
+            type="text" 
+            id="code" 
+            name="code" 
+            placeholder="000000 ou A1B2-C3D4" 
+            autocomplete="off" 
+            required 
+            autofocus
+        >
+    </div>
+
+    <button type="submit">Autenticar</button>
+</form>
+
+<hr>
+<p><a href="{% url 'accounts:login' %}">Cancelar e voltar ao login</a></p>
+
+{% endblock %}

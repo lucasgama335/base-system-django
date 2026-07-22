@@ -10,4 +10,22 @@ Dashboard do Sistema -
     <button type="submit">Sair</button>
 </form>
 
+<form action="{% url "accounts:switch_2fa" %}" method="POST">
+    {% csrf_token %}
+
+    <button type="submit">
+        {% if not user.is_2fa_enabled %}
+            Ativar Autenticação de Dois Fatores
+        {% else %}
+            Desativar Autenticação de Dois Fatores
+        {% endif %}
+    </button>
+</form>
+
+{% if messages %}
+    {% for message in messages %}
+        <div style="color: red;">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
 {% endblock %}

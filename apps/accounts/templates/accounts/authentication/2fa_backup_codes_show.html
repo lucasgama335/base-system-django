@@ -1,0 +1,15 @@
+<h2>2FA Ativado com Sucesso! 🎉</h2>
+<p><strong>IMPORTANTE: Guarde estes códigos de backup em um local seguro (como um gerenciador de senhas ou impresso).</strong></p>
+<p>Se você perder seu celular, cada um destes códigos permitirá acessar sua conta uma única vez.</p>
+
+<div style="background: #f4f4f4; padding: 15px; border-radius: 5px; font-family: monospace;">
+    <ul>
+        {% for code in backup_codes %}
+            <li><strong>{{ code }}</strong></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<p><em>⚠️ Estes códigos só serão exibidos esta vez.</em></p>
+
+<a href="{% url 'core:dashboard' %}" class="btn">Já salvei meus códigos e quero ir ao Painel</a>

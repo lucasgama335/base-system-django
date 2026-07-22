@@ -213,4 +213,6 @@ Recomendação: manter `django_base` (este projeto, sem DRF) e criar um template
 
 ## 8. A Fazer
 Rate Limite nas Tentativas de Login [x]
+Autenticação em Dois Fatores [x]
+Recaptcha [x]
 Fazer a troca do haser de senhas para Argon2PasswordHasher (pip install argon2-cffi + colocar Argon2PasswordHasher primeiro em PASSWORD_HASHERS)

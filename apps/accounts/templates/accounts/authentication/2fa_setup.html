@@ -1,0 +1,48 @@
+{% extends "accounts/base_template.html" %}
+{% block title %} Login {% endblock %}
+
+{% block main %}
+
+<h2>Ativar Autenticação em Dois Fatores (2FA)</h2>
+
+<p>Siga os passos abaixo para configurar o 2FA na sua conta:</p>
+
+<ol>
+    <li>Abra o seu aplicativo autenticador (Google Authenticator, Authy, Microsoft Authenticator, etc).</li>
+    <li>Escaneie o QR Code abaixo com a câmera do aplicativo:</li>
+</ol>
+
+<div style="margin: 20px 0;">
+    <!-- Renderiza a imagem do QR Code gerada diretamente em Base64 -->
+    <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code 2FA" width="200" height="200">
+</div>
+
+<p><strong>Não consegue escanear?</strong> Digite manualmente a chave secreta abaixo no seu aplicativo:</p>
+<code>{{ secret_key }}</code>
+
+<hr>
+
+<h3>Confirmar Ativação</h3>
+<p>Digite o código de 6 dígitos gerado pelo seu aplicativo para validar a configuração:</p>
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="code">Código de 6 dígitos:</label>
+        <input 
+            type="text" 
+            id="code" 
+            name="code" 
+            placeholder="123456" 
+            maxlength="6" 
+            inputmode="numeric"
+            autocomplete="off" 
+            required 
+            autofocus
+        >
+    </div>
+    
+    <button type="submit">Ativar 2FA</button>
+</form>
+
+{% endblock %}
