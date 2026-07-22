@@ -24,6 +24,11 @@
 
 <h3>Confirmar Ativação</h3>
 <p>Digite o código de 6 dígitos gerado pelo seu aplicativo para validar a configuração:</p>
+{% if messages %}
+    {% for message in messages %}
+        <div style="color: red;">{{ message }}</div>
+    {% endfor %}
+{% endif %}
 
 <form method="post">
     {% csrf_token %}
