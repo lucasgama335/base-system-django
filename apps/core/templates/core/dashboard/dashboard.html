@@ -3,13 +3,8 @@
 
 {% block main %}
 
-<div class="bg-gray-50 text-gray-900">
-    Dashboard do Sistema - 
-    <form action="{% url "accounts:logout" %}" method="POST">
-        {% csrf_token %}
-
-        <button type="submit">Sair</button>
-    </form>
+<div class="">
+    <h1>Dashboard do Sistema - Seja bem-vindo, {{ user.first_name }}</h1>
 
     <form action="{% url "accounts:switch_2fa" %}" method="POST">
         {% csrf_token %}

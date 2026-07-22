@@ -7,13 +7,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/js/all.min.js" integrity="sha512-BivWm1+PupfLofQ5Ei/fNEC6Oq6IZiGO9WUm2ibWHZ33cj/qTX4zsBW/0SN9Myo4HEmINmr0wjuQE8eDL3rmng==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     {% block extra_head %} {% endblock %}
 </head>
 <body class="w-full min-h-full h-auto overflow-x-hidden overflow-y-auto">
-    {% block main %} {% endblock %}
+    <div class="
+        w-full h-full flex
+        bg-[#089bab]
+    ">
+        <aside id="mainMenu" class="
+            absolute left-0 md:relative bg-[#089bab] z-[910]
+            w-[245px] h-dvh overflow-y-auto transition-all duration-300 overflow-x-hidden
+        " aria-expanded="true">
+    
+            <div class="w-full flex justify-between items-center p-[16px]">
+                <div class="w-full flex items-center gap-4">
+                     <img src="{% static 'images/logo-menu.png' %}" class="h-[45px]" alt="logo">
+                     <span class="text-white text-[28px]">Teste</span>
+                 </div>
 
+                 <button id="mainMenuControl2" class="visible md:invisible">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </aside>
+
+        <div id="wrapperContent" class="
+            w-full
+            p-8 rounded-t-[25px] md:rounded-tr-[0px]
+            bg-[#eff7f8] transition-all duration-300
+        ">
+            <section class="flex justify-between items-center w-full h-[78px] bg-white p-5 mb-4">
+                <button id="mainMenuControl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <form action="{% url "accounts:logout" %}" method="POST">
+                    {% csrf_token %}
+
+                    <button type="submit" class="bg-rose-500 hover:bg-rose-700 transition-colors duration-300 py-2 px-5 rounded-md text-white">Sair</button>
+                </form>
+            </section>
+            <main>
+                {% block main %} {% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="{% static 'core/js/main-menu-functions.js' %}"></script>
     {% block extra_scripts %} {% endblock %}
 </body>
 </html>

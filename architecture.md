@@ -220,3 +220,4 @@ Configurar cache para o ratelimiter []
 Pedir Reconfirmação Quando for Desativar 2FA[]
 
 LEMBRAR DE ALTERAR DEBUF = Flase e SECRETE_KEY quando for para produção
+COLOR: #16284C
