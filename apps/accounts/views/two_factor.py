@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 from django_ratelimit.decorators import ratelimit
 
 from apps.accounts.models import User, UserBackupCode
-from apps.accounts.utils import get_ratelimit_ip, update_user_remember_session
+from apps.accounts.utils import apply_session_expiry, get_ratelimit_ip
 
 
 @login_required
@@ -108,7 +108,7 @@ def verify_2fa_view(request):
         if is_totp_valid or is_backup_valid:
             # Autentica oficialmente o usuário no Django
             login(request, user, "apps.accounts.backends.EmailAuthenticationBackend")
-            update_user_remember_session(request, remember_me)
+            apply_session_expiry(request, remember_me)
 
             # Limpa as variáveis temporárias da sessão por segurança
             del request.session['pre_2fa_user_id']

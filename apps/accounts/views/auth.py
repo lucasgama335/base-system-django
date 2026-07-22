@@ -14,9 +14,9 @@ from django_ratelimit.decorators import ratelimit
 
 from apps.accounts.forms import LoginForm
 from apps.accounts.utils import (
+    apply_session_expiry,
     get_ratelimit_ip,
     redirect_safe_next_url,
-    update_user_remember_session,
 )
 
 
@@ -44,7 +44,7 @@ def login_view(request):
                 
                 # --- LOGIN NORMAL (SEM 2FA) ---
                 login(request, user)
-                update_user_remember_session(request, remember_me)
+                apply_session_expiry(request, remember_me)
 
                 return redirect_safe_next_url(request, settings.LOGIN_REDIRECT_URL)
             else:
