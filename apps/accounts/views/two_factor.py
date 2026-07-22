@@ -11,6 +11,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 from django_ratelimit.decorators import ratelimit
 
+from apps.accounts import services
 from apps.accounts.models import User, UserBackupCode
 from apps.accounts.utils import apply_session_expiry, get_ratelimit_ip
 
@@ -19,55 +20,24 @@ from apps.accounts.utils import apply_session_expiry, get_ratelimit_ip
 @ratelimit(key=get_ratelimit_ip, rate="5/m", method="POST", block=True)
 def setup_2fa_view(request):
     user = request.user
-
-    # Se o 2FA já estiver ativo, não há necessidade de reconfigurar
     if user.is_2fa_enabled:
         messages.info(request, "A autenticação em dois fatores (2FA) já está ativada na sua conta.")
         return redirect("core:dashboard")
 
-    # 1. Se o usuário ainda não possui uma chave secreta temporária, geramos uma
-    if not user.otp_secret:
-        user.otp_secret = pyotp.random_base32()
-        user.save(update_fields=["otp_secret"])
+    services.ensure_otp_secret(user)
 
-    totp = pyotp.TOTP(user.otp_secret)
-
-    # 2. Processa a confirmação do código digitado pelo usuário
     if request.method == 'POST':
         code = request.POST.get("code", "").strip()
-
-        # Valida o código de 6 dígitos fornecido pelo app (Authenticator)
-        if totp.verify(code):
-            user.is_2fa_enabled = True
-            user.save(update_fields=['is_2fa_enabled'])
-
-            # Atualiza a chave de sessão do usuário atual e invalida o login em todos os outros navegadores/dispositivos
+        if services.verify_totp_code(user, code):
+            raw_codes = services.activate_2fa(user)
             update_session_auth_hash(request, user)
-
-            # --- GERAR CÓDIGOS DE BACKUP ---
-            raw_backup_codes = UserBackupCode.generate_codes_for_user(user)
-
             messages.success(request, "2FA ativado com sucesso! Sua conta está mais segura.")
-            return render(request, "accounts/authentication/2fa_backup_codes_show.html", {
-                "backup_codes": raw_backup_codes
-            })
+            return render(request, "accounts/authentication/2fa_backup_codes_show.html", { "backup_codes": raw_codes })
         else:
             messages.error(request, "Código de verificação inválido. Tente novamente.")
 
-    # 3. Gera o Link URI do TOTP (usado pelos apps de autenticação)
-    provisioning_uri = totp.provisioning_uri(
-        name=user.email,
-        issuer_name="SistemaBase"  # Nome que aparecerá no app do usuário
-    )
-
-    # 4. Converte o QR Code em imagem PNG codificada em Base64
-    img = qrcode.make(provisioning_uri)
-    buffer = io.BytesIO()
-    img.save(buffer, format="PNG")
-    qr_code_base64 = base64.b64encode(buffer.getvalue()).decode()
-
     context = {
-        "qr_code_base64": qr_code_base64,
+        "qr_code_base64": services.build_qr_code_base64(user),
         "secret_key": user.otp_secret,
     }
     return render(request, "accounts/authentication/2fa_setup.html", context)
