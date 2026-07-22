@@ -13,7 +13,11 @@ from django.views.decorators.http import require_POST
 from django_ratelimit.decorators import ratelimit
 
 from apps.accounts.forms import LoginForm
-from apps.accounts.utils import get_ratelimit_ip, redirect_safe_next_url
+from apps.accounts.utils import (
+    get_ratelimit_ip,
+    redirect_safe_next_url,
+    update_user_remember_session,
+)
 
 
 @ratelimit(key=get_ratelimit_ip, rate="5/m", method="POST", block=True)
@@ -40,11 +44,7 @@ def login_view(request):
                 
                 # --- LOGIN NORMAL (SEM 2FA) ---
                 login(request, user)
-
-                if remember_me:
-                    request.session.set_expiry(14 * 24 * 60 * 60)
-                else:
-                    request.session.set_expiry(0)
+                update_user_remember_session(request, remember_me)
 
                 return redirect_safe_next_url(request, settings.LOGIN_REDIRECT_URL)
             else:

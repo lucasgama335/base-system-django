@@ -30,3 +30,9 @@ def redirect_safe_next_url(request, route):
         return redirect(next_url)
 
     return redirect(route)
+
+def update_user_remember_session(request, remember_me):
+    if remember_me:
+        request.session.set_expiry(14 * 24 * 60 * 60)
+    else:
+        request.session.set_expiry(0)
