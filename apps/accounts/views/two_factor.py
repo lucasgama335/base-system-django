@@ -1,8 +1,3 @@
-import base64
-import io
-
-import pyotp
-import qrcode
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
@@ -44,7 +39,6 @@ def setup_2fa_view(request):
 
 @ratelimit(key=get_ratelimit_ip, rate="5/m", method="POST", block=True)
 def verify_2fa_view(request):
-    # Se o usuário já estiver logado, não precisa estar aqui
     if request.user.is_authenticated:
         return redirect(settings.LOGIN_REDIRECT_URL)
 
@@ -65,17 +59,9 @@ def verify_2fa_view(request):
 
     if request.method == "POST":
         code = request.POST.get("code", "").strip()
-        totp = pyotp.TOTP(user.otp_secret)
 
-        # 1. Tenta validar via TOTP (6 dígitos)
-        is_totp_valid = totp.verify(code)
-
-        # 2. Se o TOTP falhou, tenta validar como Código de Backup
-        is_backup_valid = False
-        if not is_totp_valid:
-            is_backup_valid = UserBackupCode.verify_and_use_code(user, code)
-
-        if is_totp_valid or is_backup_valid:
+        is_valid, method = services.verify_second_factor(user, code)
+        if is_valid:
             # Autentica oficialmente o usuário no Django
             login(request, user, "apps.accounts.backends.EmailAuthenticationBackend")
             apply_session_expiry(request, remember_me)
@@ -85,29 +71,23 @@ def verify_2fa_view(request):
             if 'pre_2fa_remember_me' in request.session:
                 del request.session['pre_2fa_remember_me']
 
-            if is_backup_valid:
+            if method == "backup":
                 messages.warning(request, "Você utilizou um código de backup para entrar. Lembre-se de que ele não poderá ser reusado.")
             else:
                 messages.success(request, f"Bem-vindo(a) de volta, { user.first_name or user.email }!")
-
             return redirect(settings.LOGIN_REDIRECT_URL)
         else:
             messages.error(request, "Código de autenticação inválido. Tente novamente.")
+
     return render(request, "accounts/authentication/2fa_verify.html", { "user_email": user.email })
 
 @login_required
 @require_POST
 def switch_2fa_view(request):
     user = request.user
-    print(user.is_2fa_enabled)
     if user.is_2fa_enabled:
-        UserBackupCode.flush_codes_for_user(user)
-        user.otp_secret = None
-        user.is_2fa_enabled = False
+        services.deactivate_2fa(user)
         messages.success(request, "Autenticação em Dois Fatores Desativada!")
-        user.save(update_fields=["otp_secret", "is_2fa_enabled"])
-
     else:
         return redirect("accounts:2fa_setup")
-
     return redirect(settings.LOGIN_REDIRECT_URL)
